@@ -69,7 +69,13 @@ test('Accès Dashboard Admin', async ({ page }) => {
 });
 ```
 
-⚠️ **Important** : Ne jamais commiter le fichier `auth.json` sur GitHub (il contient tes accès). Ajoute-le au `.gitignore`.
+> [!DANGER]
+> **⚠️ TRÈS IMPORTANT : SÉCURITÉ ⚠️**
+>
+> **NE JAMAIS** mettre le fichier `auth.json` sur GitHub.
+> Ce fichier contient tes accès personnels (cookies de connexion). Si tu le partages, nimporte qui peut se connecter à ta place !
+>
+> 👉 **Vérifie toujours** qu'il est bien ignoré (grisé) par VS Code avant de faire un commit.
 
 ---
 
