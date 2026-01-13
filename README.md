@@ -43,6 +43,36 @@ npx playwright install
 
 ---
 
+## 🔐 Tester la partie Admin (Connexion Google)
+
+Pour tester la partie Admin, Playwright ne peut pas se connecter "tout seul" à cause de la sécurité Google (2FA, etc.).
+La solution est de **sauvegarder ta session de connexion** une seule fois et de la réutiliser.
+
+### Étape 1 : Générer le fichier de connexion
+Lance cette commande spéciale. Elle va ouvrir un navigateur où tu devras te connecter manuellement à l'Admin.
+```bash
+npx playwright codegen --save-storage=auth.json https://alegria.guzzler-bot.cloud/admin
+```
+1.  Connecte-toi avec ton compte Google dans la fenêtre qui s'ouvre.
+2.  Une fois sur le Dashboard Admin, ferme le navigateur Playwright.
+3.  Un file `auth.json` a été créé à la racine ! C'est ta "clé" d'accès.
+
+### Étape 2 : Utiliser la connexion dans les tests
+Dans tes fichiers de test (ex: `admin.spec.ts`), dis à Playwright d'utiliser ce fichier :
+
+```typescript
+test.use({ storageState: 'auth.json' });
+
+test('Accès Dashboard Admin', async ({ page }) => {
+  await page.goto('/admin');
+  // Tu es déjà connecté !
+});
+```
+
+⚠️ **Important** : Ne jamais commiter le fichier `auth.json` sur GitHub (il contient tes accès). Ajoute-le au `.gitignore`.
+
+---
+
 ## 🎮 Lancer les Tests
 
 Il y a plusieurs façons de lancer les tests. En tant qu'alternant, je te conseille le **Mode UI** qui est très visuel.
