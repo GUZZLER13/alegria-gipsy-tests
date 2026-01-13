@@ -114,8 +114,4 @@ Voici comment les fichiers sont rangés :
 
 ---
 
-## 💡 Astuce pour tester en local
-Par défaut, les tests tapent sur le site en ligne.
-Si tu veux tester une version locale (ex: `http://localhost:5173`), tu peux changer la `baseURL` dans `playwright.config.ts` ou dans ton fichier de test.
-
 Bon courage pour les tests ! 🚀
