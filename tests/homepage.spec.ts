@@ -1,11 +1,8 @@
 import { test, expect } from '@playwright/test';
 
 test('Homepage loads successfully', async ({ page }) => {
-    // Replace with the actual production URL or localhost for testing
-    // For now using the placeholder as per README instructions, or localhost if available
-    const targetUrl = 'http://localhost:5173'; // Default to dev for local test, user can change to prod
-
-    await page.goto(targetUrl);
+    // Test runs against the baseURL configured in playwright.config.ts (Production by default)
+    await page.goto('/');
 
     // Check that the page has a title (basic availability check)
     await expect(page).toHaveTitle(/Alegria/i);

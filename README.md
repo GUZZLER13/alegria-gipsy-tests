@@ -4,8 +4,9 @@ Bienvenue sur le dépôt de tests automatisés du projet **Alegria Gipsy**.
 Ce projet utilise **Playwright**, un outil moderne pour simuler un utilisateur réel sur le site web et vérifier que tout fonctionne correctement.
 
 ## 🎯 Objectif
-Le but de ce projet est de tester le site (en production ou en local) pour s'assurer qu'il n'y a pas de bugs visuels ou fonctionnels.
-Le code du site lui-même n'est **pas** ici. Ici, nous n'avons que les scripts de test.
+Le but de ce projet est de tester le vrai site en ligne (Production) pour s'assurer qu'il n'y a pas de bugs.
+L'URL de production configurée par défaut est :
+👉 **[https://alegria.guzzler-bot.cloud/](https://alegria.guzzler-bot.cloud/)**
 
 ---
 
@@ -47,7 +48,7 @@ npx playwright install
 Il y a plusieurs façons de lancer les tests. En tant qu'alternant, je te conseille le **Mode UI** qui est très visuel.
 
 ### Option 1 : Le Mode Interactif (Recommandé) ✨
-C'est le plus simple pour comprendre ce qu'il se passe. Une fenêtre va s'ouvrir où tu pourras voir les tests, les lancer un par un, et voir le navigateur en temps réel.
+C'est le plus simple pour comprendre ce qu'il se passe. Une fenêtre va s'ouvrir où tu pourras voir les tests, les lancer un par un, et voir le navigateur en temps réel sur le site de production.
 ```bash
 npx playwright test --ui
 ```
@@ -72,15 +73,13 @@ Voici comment les fichiers sont rangés :
 
 *   **`tests/`** : C'est ici que tu écriras tes tests. Chaque fichier `.spec.ts` est un scénario de test.
     *   Exemple : `homepage.spec.ts` teste la page d'accueil.
-*   **`playwright.config.ts`** : Le fichier de configuration principal. C'est ici qu'on définit l'URL du site à tester (localhost ou prod), les navigateurs à utiliser, etc.
+*   **`playwright.config.ts`** : Le fichier de config principal. L'URL `baseURL` est réglée sur la prod (`https://alegria.guzzler-bot.cloud/`).
 *   **`package.json`** : La liste des outils utilisés par le projet.
 
 ---
 
-## 💡 Astuce pour l'URL
-Dans le fichier de test (`tests/homepage.spec.ts`), tu verras une variable pour l'URL.
-Tu peux la changer pour tester soit :
-*   Le site en production (le vrai site en ligne).
-*   Ton site en local (`http://localhost:5173`) si tu développes une nouvelle fonctionnalité sur le projet principal.
+## 💡 Astuce pour tester en local
+Par défaut, les tests tapent sur le site en ligne.
+Si tu veux tester une version locale (ex: `http://localhost:5173`), tu peux changer la `baseURL` dans `playwright.config.ts` ou dans ton fichier de test.
 
 Bon courage pour les tests ! 🚀
