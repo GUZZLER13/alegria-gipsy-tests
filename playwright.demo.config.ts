@@ -20,7 +20,7 @@ export default defineConfig({
         trace: 'on',
         storageState: 'auth.json',
     },
-    reporter: [['line'], ['html', { open: 'never' }]],
+    reporter: [['line'], ['html', { open: 'always' }]],
     projects: [
         {
             name: 'DÉMO PRÉCISION',
