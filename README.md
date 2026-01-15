@@ -9,8 +9,12 @@ Bienvenue dans l'écosystème technique d'Alegria Gipsy. Ce dépôt contient **n
 
 ## 🚀 Installation de l'environnement
 
-```bash
+### Pour Windows (Powershell)
+```powershell
+# 1. Installe les dépendances
 npm install
+
+# 2. Installe les navigateurs de test
 npx playwright install
 ```
 
@@ -37,6 +41,26 @@ node scripts/supabase_auth.js
 - Génère les tokens JWT sécurisés.
 - Crée le fichier `auth.json` pour la persistance des sessions.
 
+## 🎓 🚀 Setup Alternant (Onboarding)
+Si tu viens de cloner le repo, suis ces étapes pour configurer ton accès sécurisé en 2 minutes :
+
+1.  **Lance le script d'aide :**
+    ```bash
+    node scripts/setup_onboarding.js
+    ```
+    *Il va créer le fichier `auth.json` vide si nécessaire.*
+
+2.  **Récupère ta session :**
+    *   Connecte-toi manuellement sur [L'Admin du Site](https://alegria.guzzler-bot.cloud/admin).
+    *   Appuie sur `F12` (Console).
+    *   Colle le contenu du fichier `scripts/manual_auth_extract.js` dans la console.
+    *   Une fenêtre s'ouvre : Copie le texte.
+
+3.  **Active tes accès :**
+    *   Colle le texte dans ton fichier `auth.json`.
+    *   C'est fini ! Tu peux lancer la démo.
+
+---
 ## 🧪 Lancement de nos suites de tests
 
 ### Notre Suite de Démonstration (6 étapes clés)
