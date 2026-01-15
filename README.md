@@ -28,37 +28,29 @@ Nous utilisons des variables d'environnement pour sécuriser les accès sans les
 cp .env.example .env
 ```
 
-### 2. Notre Moteur d'Authentification
+### 2. Notre Moteur d'Authentification (Bypass Google)
 
-Notre système utilise un moteur de connexion personnalisé pour bypasser les blocages Google Auth et permettre des tests fluides en espace d'administration :
-
-```bash
-node scripts/supabase_auth.js
-```
-
-**Ce que fait notre moteur :**
-- Initialise l'utilisateur test dans notre instance Supabase.
-- Génère les tokens JWT sécurisés.
-- Crée le fichier `auth.json` pour la persistance des sessions.
+Notre système utilise un mécanisme de copie de session pour contourner la sécurité OAuth (Google/GitHub) qui bloque les robots.
+Voir la section **Setup Alternant** ci-dessous pour la procédure manuelle simplifiée (extraction de Cookies/LocalStorage).
 
 ## 🎓 🚀 Setup Alternant (Onboarding)
-Si tu viens de cloner le repo, suis ces étapes pour configurer ton accès sécurisé en 2 minutes :
 
-1.  **Lance le script d'aide :**
-    ```bash
-    node scripts/setup_onboarding.js
-    ```
-    *Il va créer le fichier `auth.json` vide si nécessaire.*
+Si tu viens de cloner le repo, suis ces étapes pour configurer ton accès sécurisé :
 
-2.  **Récupère ta session :**
-    *   Connecte-toi manuellement sur [L'Admin du Site](https://alegria.guzzler-bot.cloud/admin).
-    *   Appuie sur `F12` (Console).
-    *   Colle le contenu du fichier `scripts/manual_auth_extract.js` dans la console.
-    *   Une fenêtre s'ouvre : Copie le texte.
+### Option A : Connexion Automatique (Recommandé)
+Si tu as reçu ton mot de passe Admin :
+```bash
+# Remplace par tes identifiants
+node scripts/login_intern.js sapson210@gmail.com TonMotDePasse
+```
+*Le script va générer automatiquement ton `auth.json`. C'est fini !*
 
-3.  **Active tes accès :**
-    *   Colle le texte dans ton fichier `auth.json`.
-    *   C'est fini ! Tu peux lancer la démo.
+### Option B : Extraction Manuelle (Fallback)
+Si la commande ci-dessus ne marche pas (ex: MFA activé), utilise la méthode manuelle :
+1.  Connecte-toi sur [L'Admin du Site](https://alegria.guzzler-bot.cloud/admin).
+2.  Appuie sur `F12` > Console.
+3.  Colle le contenu de `scripts/manual_auth_extract.js`.
+4.  Copie le résultat dans `auth.json`.
 
 ---
 ## 🧪 Lancement de nos suites de tests
