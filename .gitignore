@@ -7,4 +7,11 @@ node_modules/
 /playwright/.cache/
 /playwright/.auth/
 
+# Fichiers sensibles - NE JAMAIS COMMIT
 auth.json
+.env
+.env.local
+*.local
+
+# Scripts avec credentials
+scripts/supabase_auth.js

@@ -3,13 +3,17 @@
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
-  "scripts": {},
+  "scripts": {
+    "test:ui": "playwright test --ui",
+    "test:demo": "playwright test --config=playwright.demo.config.ts"
+  },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "type": "commonjs",
   "devDependencies": {
     "@playwright/test": "^1.57.0",
-    "@types/node": "^25.0.7"
+    "@types/node": "^25.0.7",
+    "dotenv": "^17.2.3"
   }
 }

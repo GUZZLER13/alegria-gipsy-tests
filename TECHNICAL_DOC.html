@@ -1,0 +1,583 @@
+<!DOCTYPE html>
+<html lang="fr" style="scroll-behavior: smooth;">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Architecture Technique QA - Alegria Gipsy</title>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap"
+        rel="stylesheet">
+    <style>
+        :root {
+            --primary: #D90404;
+            --primary-light: #ff1a1a;
+            --bg: #030303;
+            --surface: #0a0a0a;
+            --surface-accent: #151515;
+            --text-main: #ffffff;
+            --text-dim: #a0a0a0;
+            --accent-blue: #38bdf8;
+            --accent-green: #22c55e;
+            --accent-amber: #f59e0b;
+            --border: rgba(255, 255, 255, 0.08);
+            --font-main: 'Plus Jakarta Sans', sans-serif;
+            --font-mono: 'JetBrains Mono', monospace;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background-color: var(--bg);
+            color: var(--text-main);
+            font-family: var(--font-main);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        /* Modern Gradient Background */
+        .bg-mesh {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            background:
+                radial-gradient(circle at 0% 0%, rgba(217, 4, 4, 0.08) 0%, transparent 40%),
+                radial-gradient(circle at 100% 100%, rgba(56, 189, 248, 0.05) 0%, transparent 40%);
+        }
+
+        nav {
+            position: fixed;
+            top: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(10, 10, 10, 0.8);
+            backdrop-filter: blur(12px);
+            padding: 12px 30px;
+            border-radius: 100px;
+            border: 1px solid var(--border);
+            z-index: 1000;
+            display: flex;
+            gap: 25px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+        }
+
+        nav a {
+            color: var(--text-dim);
+            text-decoration: none;
+            font-size: 0.85rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            transition: all 0.3s;
+        }
+
+        nav a:hover {
+            color: var(--primary);
+        }
+
+        header {
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            padding: 0 20px;
+        }
+
+        .category-tag {
+            background: rgba(217, 4, 4, 0.1);
+            color: var(--primary);
+            padding: 6px 16px;
+            border-radius: 100px;
+            font-size: 0.8rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            margin-bottom: 2rem;
+            border: 1px solid rgba(217, 4, 4, 0.2);
+        }
+
+        h1 {
+            font-size: clamp(2.5rem, 8vw, 5rem);
+            font-weight: 800;
+            letter-spacing: -2px;
+            line-height: 1;
+            margin-bottom: 1.5rem;
+            background: linear-gradient(to bottom, #fff 40%, #555);
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        header p {
+            font-size: 1.25rem;
+            color: var(--text-dim);
+            max-width: 700px;
+            font-weight: 400;
+        }
+
+        section {
+            padding: 100px 20px;
+            max-width: 1100px;
+            margin: 0 auto;
+        }
+
+        .section-title {
+            margin-bottom: 50px;
+        }
+
+        .section-title h2 {
+            font-size: 2.5rem;
+            font-weight: 800;
+            margin-bottom: 15px;
+        }
+
+        .section-title .line {
+            width: 60px;
+            height: 4px;
+            background: var(--primary);
+            border-radius: 2px;
+        }
+
+        .grid-tech {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+        }
+
+        .tech-card {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            padding: 30px;
+            /* Réduit de 40px pour plus de place */
+            border-radius: 24px;
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            overflow-wrap: break-word;
+            word-wrap: break-word;
+        }
+
+        .tech-card:hover {
+            transform: translateY(-10px);
+            border-color: rgba(217, 4, 4, 0.3);
+            background: var(--surface-accent);
+        }
+
+        .tech-card h3 {
+            font-size: 1.5rem;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .tech-card p {
+            color: var(--text-dim);
+            font-size: 1rem;
+            margin-bottom: 20px;
+        }
+
+        .code-snippet {
+            font-family: var(--font-mono);
+            background: rgba(0, 0, 0, 0.3);
+            padding: 15px;
+            border-radius: 12px;
+            font-size: 0.85rem;
+            color: var(--accent-blue);
+            border-left: 3px solid var(--accent-blue);
+            white-space: pre-wrap;
+            word-break: break-all;
+        }
+
+        .feature-list {
+            list-style: none;
+            margin-top: 20px;
+        }
+
+        .feature-list li {
+            margin-bottom: 15px;
+            position: relative;
+            padding-left: 28px;
+            color: var(--text-dim);
+            line-height: 1.6;
+        }
+
+        .feature-list li::before {
+            content: '→';
+            position: absolute;
+            left: 0;
+            top: 0;
+            color: var(--primary);
+            font-weight: 800;
+        }
+
+        .badge {
+            display: inline-block;
+            padding: 4px 10px;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 6px;
+            font-size: 0.75rem;
+            font-family: var(--font-mono);
+            margin-right: 5px;
+            color: #fff;
+        }
+
+        /* Final Button */
+        .cta-container {
+            text-align: center;
+            padding: 100px 0;
+        }
+
+        .btn-launch {
+            background: var(--primary);
+            color: white;
+            padding: 20px 45px;
+            border-radius: 100px;
+            font-size: 1.1rem;
+            font-weight: 800;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 15px;
+            transition: all 0.3s;
+            box-shadow: 0 10px 40px rgba(217, 4, 4, 0.4);
+        }
+
+        .btn-launch:hover {
+            transform: scale(1.05);
+            background: var(--primary-light);
+            box-shadow: 0 15px 50px rgba(217, 4, 4, 0.6);
+        }
+
+        footer {
+            padding: 50px 20px;
+            text-align: center;
+            border-top: 1px solid var(--border);
+            color: var(--text-dim);
+            font-size: 0.9rem;
+        }
+
+        @media (max-width: 768px) {
+            nav {
+                display: none;
+            }
+
+            section {
+                padding: 60px 20px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="bg-mesh"></div>
+
+    <nav>
+        <a href="#arch">Architecture</a>
+        <a href="#auth">Moteur Auth</a>
+        <a href="#precision">Précision</a>
+        <a href="#demo">Demo Flow</a>
+        <a href="#guide">Guide Apprenti</a>
+    </nav>
+
+    <header>
+        <div class="category-tag">Alegria Gipsy Excellence</div>
+        <h1>Notre Infrastructure QA</h1>
+        <p>Découvrez comment nous garantissons une fiabilité absolue pour la plateforme Alegria Gipsy grâce à notre
+            suite de tests automatisés de pointe.</p>
+    </header>
+
+    <section id="arch">
+        <div class="section-title">
+            <h2>Notre Architecture et Stratégie</h2>
+            <div class="line"></div>
+        </div>
+        <div class="grid-tech">
+            <div class="tech-card">
+                <h3>Domaines Isolés et POM</h3>
+                <p>Pourquoi avons-nous séparé nos tests en plusieurs fichiers ? Contrairement à une approche
+                    monolithique, cette structure garantit une granularité chirurgicale.</p>
+                <div class="code-snippet">/tests/homepage.spec.ts (Visibilité)<br>/tests/booking.spec.ts
+                    (Vente)<br>/tests/admin.spec.ts (Sécurité)</div>
+                <ul class="feature-list">
+                    <li><strong>homepage :</strong> Valide l'identité visuelle et le premier contact client.</li>
+                    <li><strong>booking :</strong> Sécurise le tunnel de conversion (le cœur du business).</li>
+                    <li><strong>admin :</strong> Verrouille la gestion interne et l'intégrité des données.</li>
+                    <li><strong>selector-logic :</strong> Audit de précision Admin <-> Public.</li>
+                </ul>
+            </div>
+            <div class="tech-card">
+                <h3>Bénéfices Techniques</h3>
+                <p>Cette séparation n'est pas qu'organisationnelle, elle est stratégique.</p>
+                <ul class="feature-list">
+                    <li><strong>Maintenance :</strong> Une modification UI n'impacte qu'un fichier.</li>
+                    <li><strong>Parallélisation :</strong> Playwright lance chaque fichier sur un CPU différent.</li>
+                    <li><strong>Rapidité :</strong> Exécution de 100% de la suite en < 90 secondes.</li>
+                </ul>
+            </div>
+        </div>
+    </section>
+
+    <section id="auth" style="background: rgba(255,255,255,0.02); border-radius: 60px;">
+        <div class="section-title">
+            <h2>Notre Moteur d'Authentification</h2>
+            <div class="line"></div>
+        </div>
+        <div class="grid-tech">
+            <div class="tech-card" style="border-left: 4px solid var(--accent-amber);">
+                <h3>Bypass de Google OAuth</h3>
+                <p>Pour éviter les blocages de sécurité traditionnels, nous avons développé une injection de session
+                    "API-First" ultra-rapide.</p>
+                <ul class="feature-list">
+                    <li>Communication directe via <strong>Supabase REST API</strong></li>
+                    <li>Génération de <strong>JWT tokens</strong> persistants</li>
+                    <li>Injection de <code>localStorage</code> au boot du navigateur</li>
+                </ul>
+            </div>
+            <div class="tech-card">
+                <h3>Persistance d'état</h3>
+                <p>L'état authentifié est partagé entre tous les tests via un fichier de configuration sécurisé.</p>
+                <div class="code-snippet">storageState: 'auth.json'</div>
+            </div>
+        </div>
+    </section>
+
+    <section id="precision">
+        <div class="section-title">
+            <h2>Notre Validation de Précision</h2>
+            <div class="line"></div>
+        </div>
+        <div class="grid-tech">
+            <div class="tech-card">
+                <h3>Empreinte Numérique</h3>
+                <p>Nos tests ne se contentent pas de regarder l'écran : ils traquent la signature numérique de chaque
+                    média.
+                </p>
+                <div class="code-snippet">match: src.includes(unique_id)</div>
+                <ul class="feature-list">
+                    <li>Extraction de l'URL dans l'Admin</li>
+                    <li>Scan du DOM sur le site Public</li>
+                    <li>Preuve d'intégrité Base de Données -> Front</li>
+                </ul>
+            </div>
+            <div class="tech-card">
+                <h3>Interception Réseau</h3>
+                <p>Validation "invisible" en écoutant les échanges entre le client et le serveur.</p>
+                <ul class="feature-list">
+                    <li>Capture des réponses HTTP 200 OK</li>
+                    <li>Vérification des payloads Supabase</li>
+                    <li>Garantie de réception des réservations</li>
+                </ul>
+            </div>
+        </div>
+    </section>
+
+    <section id="demo">
+        <div class="section-title">
+            <h2>Notre Suite de Démonstration Unifiée</h2>
+            <div class="line"></div>
+        </div>
+        <div class="tech-card" style="max-width: 900px; margin: 0 auto; border-top: 4px solid var(--primary);">
+            <h3>Simulation d'Utilisateur Intégrale</h3>
+            <p>Le fichier <code>demo-complet.spec.ts</code> orchestre 6 étapes clés sans jamais fermer le navigateur
+                (Persistent Context) pour simuler une session continue ultra-fluide.</p>
+            <div class="feature-list">
+                <div class="badge">Étape 1</div> <span><strong>Validation Public :</strong> Navigation 1920x1080 et
+                    identité visuelle Obsidian.</span><br>
+                <div class="badge">Étape 2</div> <span><strong>Responsive Mobile :</strong> Bascule iPhone 13 sans
+                    rechargement pour tester le menu burger.</span><br>
+                <div class="badge">Étape 3</div> <span><strong>Action Client :</strong> Simulation d'une réservation
+                    réelle avec envoi du formulaire.</span><br>
+                <div class="badge">Étape 4</div> <span><strong>Sécurité Admin :</strong> Franchissement du mur
+                    OAuth/Whitelist et accès au Dashboard.</span><br>
+                <div class="badge">Étape 5</div> <span><strong>Conversions et Stats :</strong> Audit de l'incrémentation
+                    des visites et des bookings en temps réel.</span><br>
+                <div class="badge">Étape 6</div> <span><strong>Bilan Santé :</strong> Diagnostic final d'intégrité de
+                    toute l'infrastructure.</span>
+            </div>
+            <p style="margin-top: 20px; font-size: 0.9rem; color: var(--text-dim);">Ce flux garantit que chaque
+                composant (Frontend, Backend, Supabase, Cloudflare R2) collabore parfaitement.</p>
+        </div>
+    </section>
+
+    <section id="deep-dive"
+        style="background: rgba(0,0,0,0.2); border-radius: 40px; padding: 60px 40px; border: 1px solid var(--border);">
+        <div class="section-title">
+            <h2>Deep Dive : L'Ingénierie de nos Tests</h2>
+            <p style="color: var(--text-dim);">Détail pas à pas des mécanismes qui rendent notre démo indestructible.
+            </p>
+        </div>
+
+        <div style="display: flex; flex-direction: column; gap: 40px;">
+            <!-- Step 1 & 2 -->
+            <div class="tech-card" style="border-top: 4px solid var(--accent-blue);">
+                <div class="badge" style="margin-bottom: 15px;">ÉTAPES 1 et 2 : PERSISTENCE DU CONTEXTE</div>
+                <p>Au lieu de recréer un navigateur, on utilise un <strong>browserContext</strong> unique. Cela nous
+                    permet de changer de résolution (Mobile/Desktop) sans perdre la session.</p>
+                <div class="code-snippet">
+                    await sharedPage.setViewportSize({ width: 390, height: 844 });<br>
+                    // On teste le mobile...<br>
+                    await sharedPage.setViewportSize({ width: 1920, height: 1080 });<br>
+                    // On repasse en HD instantanément !
+                </div>
+                <p style="margin-top: 15px; font-size: 0.9rem;"><strong>Pourquoi c'est robuste :</strong> Cela évite 10
+                    secondes de rechargement et garantit que le "panier" ou la "session" de l'utilisateur reste active.
+                </p>
+            </div>
+
+            <!-- Step 3 -->
+            <div class="tech-card" style="border-top: 4px solid var(--accent-green);">
+                <div class="badge" style="margin-bottom: 15px;">ÉTAPE 3 : SIMULATION D'ENVOI RÉEL</div>
+                <p>On n'utilise pas d'API factice (Mock). On clique vraiment sur le bouton pour tester la chaîne
+                    entière.</p>
+                <div class="code-snippet">
+                    const [resp] = await Promise.all([<br>
+                    &nbsp;&nbsp;page.waitForResponse(r => r.url().includes('supabase') && r.request().method() ===
+                    'POST'),<br>
+                    &nbsp;&nbsp;submitBtn.click()<br>
+                    ]);<br>
+                    console.log(`✅ Réponse reçue : ${resp.status()}`);
+                </div>
+                <p style="margin-top: 15px; font-size: 0.9rem;"><strong>Robustesse :</strong> On attend la preuve réseau
+                    <strong>pendant</strong> le clic grâce à <code>Promise.all</code>. Cela évite les "bugs fantômes" où
+                    le robot clique trop vite pour le serveur.
+                </p>
+            </div>
+
+            <!-- Step 5 -->
+            <div class="tech-card" style="border-top: 4px solid var(--primary);">
+                <div class="badge" style="margin-bottom: 15px;">ÉTAPE 5 : DOUBLE VALIDATION (UI + RÉSEAU)</div>
+                <p>C'est le test le plus complet. On ne vérifie pas seulement le texte à l'écran, on intercepte le
+                    "signal" qui part vers le serveur.</p>
+                <div class="code-snippet">
+                    // INTERCEPTION RÉSEAU ET ACTION SIMULTANÉES<br>
+                    const [res] = await Promise.all([<br>
+                    &nbsp;&nbsp;page.waitForResponse(r => r.url().includes('supabase')),<br>
+                    &nbsp;&nbsp;publicSite.clickSocial('instagram')<br>
+                    ]);<br>
+                    if (res.ok()) console.log('✅ Tracking envoyé !');
+                </div>
+                <p style="margin-top: 15px; font-size: 0.9rem;"><strong>Robustesse Maximale :</strong> Si le chiffre
+                    dans l'Admin n'augmente pas, ce test nous dira si la faute vient du <strong>Frontend</strong> (le
+                    signal n'est jamais parti) ou du <strong>Backend</strong> (le signal est bien arrivé mais la base
+                    n'a pas mis à jour le compteur).</p>
+            </div>
+        </div>
+    </section>
+
+    <section id="guide" style="border-top: 1px solid var(--border);">
+        <div class="section-title">
+            <h2>Guide pour le Futur Automaticien</h2>
+            <p style="color: var(--text-dim);">Bienvenue dans l'équipe ! Voici les principes qui rendent notre suite de
+                tests "Premium" et robuste.</p>
+        </div>
+
+        <div class="grid-tech">
+            <div class="tech-card" style="border-left: 3px solid var(--accent-blue);">
+                <h3>Le secret : Le POM</h3>
+                <p>On n'écrit jamais <code>page.click('button#submit')</code> directement dans le test. Tout passe par
+                    les <strong>Page Objects</strong>.</p>
+                <ul class="feature-list" style="font-size: 0.85rem;">
+                    <li>Les <strong>Locators</strong> (le "où") sont centralisés dans <code>AdminPage.ts</code>.</li>
+                    <li>La <strong>Logique</strong> (le "comment") est dans les fichiers <code>.spec.ts</code>.</li>
+                    <li>Si le site change, on ne répare qu'un seul fichier !</li>
+                </ul>
+            </div>
+
+            <div class="tech-card" style="border-left: 3px solid var(--accent-green);">
+                <h3>La Règle d'Or : try...finally</h3>
+                <p>Un bon test laisse toujours le site dans l'état où il l'a trouvé ("Comme Neuf").</p>
+                <ul class="feature-list" style="font-size: 0.85rem;">
+                    <li><strong>Nettoyage :</strong> Le bloc <code>finally</code> s'exécute même si le test plante.
+                        Utile pour remettre un switch sur "OFF".</li>
+                    <li><strong>Environnement :</strong> Le standard industriel est de tester sur une
+                        <strong>Staging</strong> (pré-production) identique à la prod.
+                    </li>
+                    <li><strong>Sécurité :</strong> On valide les changements des développeurs sur cette Staging
+                        <strong>avant</strong> de déployer en production.
+                    </li>
+                </ul>
+            </div>
+
+            <div class="tech-card" style="border-left: 3px solid var(--primary);">
+                <h3>Persistance vs Atomicité</h3>
+                <p>C'est un concept clé en QA Premium.</p>
+                <ul class="feature-list" style="font-size: 0.85rem;">
+                    <li><strong>Atomicité :</strong> Chaque test est 100% indépendant (sécurité max).</li>
+                    <li><strong>Persistance :</strong> On garde le même navigateur (fluidité démo).</li>
+                    <li>Utilise <code>test.describe.serial</code> uniquement pour les démonstrations visuelles afin
+                        d'éviter les rechargements inutiles.</li>
+                </ul>
+            </div>
+
+            <div class="tech-card" style="background: rgba(217, 4, 4, 0.05); border: 1px dashed var(--primary);">
+                <h3>Challenge : Ton prochain Test ?</h3>
+                <p>Tu veux coder ton premier test ? Voici une piste intéressante et accessible :</p>
+                <p><strong>Test de Sync "Line-up" :</strong></p>
+                <ul class="feature-list" style="font-size: 0.85rem;">
+                    <li><strong>Action Admin :</strong> Change le rôle d'un membre du groupe (ex: de "Guitare" à
+                        "Maestro").</li>
+                    <li><strong>Action Public :</strong> Va sur la page groupe et vérifie si le nouveau titre s'affiche
+                        correctement.</li>
+                    <li><strong>Pourquoi :</strong> C'est un test de synchronisation de données parfait pour débuter.
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </section>
+
+    <div class="cta-container">
+        <p style="color: var(--text-dim); margin-bottom: 20px; font-size: 0.9rem;">Prêt à valider l'intégrité du système
+            ?</p>
+        <div style="display: inline-flex; flex-direction: column; align-items: center; gap: 15px;">
+            <a href="javascript:void(0)" class="btn-launch" id="copyBtn" onclick="copyCommand()">
+                <span id="btnText">🚀 COPIER LA COMMANDE DE TEST</span>
+                <span style="opacity: 0.5;">→</span>
+            </a>
+            <div id="commandPre"
+                style="font-family: var(--font-mono); background: rgba(0,0,0,0.5); padding: 10px 20px; border-radius: 8px; border: 1px solid var(--border); font-size: 0.8rem; color: var(--accent-green); display: none;">
+                npm run test:demo
+            </div>
+        </div>
+        <p style="margin-top: 20px; font-size: 0.8rem; color: var(--text-dim); opacity: 0.6;">
+            (Pour des raisons de sécurité, le terminal doit être lancé manuellement)
+        </p>
+    </div>
+
+    <script>
+        function copyCommand() {
+            const cmd = "npm run test:demo";
+            navigator.clipboard.writeText(cmd).then(() => {
+                const btnText = document.getElementById('btnText');
+                const commandPre = document.getElementById('commandPre');
+
+                btnText.innerText = "✅ COMMANDE COPIÉE !";
+                commandPre.style.display = "block";
+
+                setTimeout(() => {
+                    btnText.innerText = "🚀 COPIER LA COMMANDE DE TEST";
+                    commandPre.style.display = "none";
+                }, 3000);
+            });
+        }
+    </script>
+
+    <footer>
+        <p>Alegria Gipsy Quality Assurance System &copy; 2026<br><span
+                style="font-size: 0.7rem; opacity: 0.5; font-family: var(--font-mono);">BUILT WITH PLAYWRIGHT AND
+                PRECISION</span></p>
+    </footer>
+
+</body>
+
+</html>

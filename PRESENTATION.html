@@ -1,0 +1,678 @@
+<!DOCTYPE html>
+<html lang="fr" style="scroll-behavior: smooth;">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Présentation Automatisation et Playwright</title>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Manrope:wght@300;400;600;800&family=Playfair+Display:wght@700&display=swap"
+        rel="stylesheet">
+    <style>
+        :root {
+            --primary: #D90404;
+            /* Alegria Red */
+            --bg: #050505;
+            --card-bg: #111;
+            --text: #fff;
+            --text-secondary: #aaa;
+            --accent: #FFD700;
+            /* Gold */
+        }
+
+        body {
+            font-family: 'Manrope', sans-serif;
+            background-color: var(--bg);
+            color: var(--text);
+            margin: 0;
+            padding: 0;
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        /* Navigation */
+        nav {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            background: rgba(5, 5, 5, 0.9);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            z-index: 1000;
+            padding: 1rem 0;
+            text-align: center;
+        }
+
+        nav a {
+            color: var(--text);
+            text-decoration: none;
+            margin: 0 15px;
+            font-weight: 600;
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            transition: color 0.3s;
+        }
+
+        nav a:hover {
+            color: var(--primary);
+        }
+
+        /* Header */
+        header {
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            background: radial-gradient(circle at center, rgba(217, 4, 4, 0.15) 0%, transparent 70%);
+            padding: 20px;
+        }
+
+        h1 {
+            font-family: 'Playfair Display', serif;
+            font-size: 4rem;
+            margin-bottom: 0.5rem;
+            background: linear-gradient(to right, #fff, #bbb);
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .subtitle {
+            font-size: 1.5rem;
+            color: var(--primary);
+            font-weight: 300;
+            margin-bottom: 2rem;
+        }
+
+        .scroll-hint {
+            position: absolute;
+            bottom: 40px;
+            animation: bounce 2s infinite;
+            opacity: 0.5;
+            font-size: 2rem;
+        }
+
+        /* Sections */
+        section {
+            padding: 80px 20px;
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        h2 {
+            font-family: 'Playfair Display', serif;
+            font-size: 2.5rem;
+            color: var(--primary);
+            margin-bottom: 40px;
+            border-left: 5px solid var(--primary);
+            padding-left: 20px;
+        }
+
+        p {
+            font-size: 1.1rem;
+            color: var(--text-secondary);
+            margin-bottom: 20px;
+        }
+
+        /* Cards */
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            margin-top: 40px;
+        }
+
+        .card {
+            background: var(--card-bg);
+            padding: 30px;
+            border-radius: 16px;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            transition: transform 0.3s, border-color 0.3s;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+            border-color: var(--primary);
+        }
+
+        .card h3 {
+            font-size: 1.3rem;
+            margin-top: 0;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .icon {
+            font-size: 1.5rem;
+        }
+
+        /* Speedometer Styles */
+        .speed-highlight {
+            font-size: 3rem;
+            font-weight: 800;
+            color: var(--accent);
+            display: block;
+            margin: 20px 0;
+            text-align: center;
+        }
+
+        /* Limitations Box */
+        .limitation-box {
+            background: rgba(255, 255, 255, 0.05);
+            border-left: 4px solid orange;
+            padding: 20px;
+            border-radius: 0 10px 10px 0;
+            margin: 30px 0;
+        }
+
+        /* Scroll Top */
+        #scrollTop {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            background: var(--primary);
+            color: white;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-decoration: none;
+            font-size: 1.5rem;
+            opacity: 0.8;
+            transition: opacity 0.3s;
+        }
+
+        #scrollTop:hover {
+            opacity: 1;
+        }
+
+        @keyframes bounce {
+
+            0%,
+            20%,
+            50%,
+            80%,
+            100% {
+                transform: translateY(0);
+            }
+
+            40% {
+                transform: translateY(-10px);
+            }
+
+            60% {
+                transform: translateY(-5px);
+            }
+        }
+
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 2.5rem;
+            }
+
+            section {
+                padding: 40px 20px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <nav>
+        <a href="#pourquoi-automatiser">Pourquoi l'Automatisation ?</a>
+        <a href="#stack">Stack Technique</a>
+        <a href="#playwright">L'Outil Playwright</a>
+        <a href="#vitesse">Vitesse et Humain</a>
+        <a href="#robustesse">Robustesse et Dev</a>
+        <a href="#best-practices">Meilleures Pratiques</a>
+        <a href="#auth">Authentification</a>
+        <a href="#limites">Limites Mobile</a>
+        <a href="#projet">Projet Alegria</a>
+    </nav>
+
+    <header id="intro">
+        <h1>Assurance Qualité Automatisée</h1>
+        <div class="subtitle">Présentation de la Stratégie de Test</div>
+        <p style="max-width: 600px; margin: 0 auto; color: #ccc;">
+            Comment garantir qu'un site web fonctionne parfaitement à chaque instant, sans intervention humaine ?
+        </p>
+        <div class="scroll-hint">↓</div>
+    </header>
+
+    <section id="pourquoi-automatiser">
+        <h2>Pourquoi l'Automatisation ?</h2>
+        <p>
+            Vérifier manuellement un site web après chaque mise à jour est long, coûteux et source d'erreurs.
+            L'automatisation transforme cette corvée en un **avantage stratégique**.
+        </p>
+
+        <div class="grid">
+            <div class="card" style="border-left: 4px solid var(--primary);">
+                <h3>🕒 Vigilance 24h/24</h3>
+                <p>Playwright ne dort jamais. Il peut vérifier l'intégrité du site toutes les heures, pendant que vous
+                    vous concentrez sur la musique.</p>
+            </div>
+            <div class="card" style="border-left: 4px solid var(--accent);">
+                <h3>🎯 Précision Chirurgicale</h3>
+                <p>Contrairement à un humain, Playwright ne "saute" jamais une étape. Il vérifie chaque bouton, chaque
+                    champ et chaque lien avec une rigueur absolue.</p>
+            </div>
+            <div class="card" style="border-left: 4px solid #fff;">
+                <h3>💰 Économie de Temps</h3>
+                <p>Ce qui prendrait 30 minutes à un humain est validé en moins de 2 minutes par Playwright.</p>
+            </div>
+        </div>
+    </section>
+
+    <section id="stack">
+        <h2>Une Stack Technique "Next-Gen"</h2>
+        <p>
+            Le projet Alegria Gipsy repose sur les mêmes technologies que les leaders mondiaux de la Silicon Valley,
+            garantissant une plateforme <strong>premium</strong>, rapide et évolutive.
+        </p>
+
+        <div class="grid">
+            <div class="card" style="border-top: 3px solid #61dafb;">
+                <h3>Frontend : React et TS</h3>
+                <p>La référence absolue pour des interfaces fluides. <br><em>Utilisé par : Netflix, Airbnb,
+                        Instagram.</em></p>
+            </div>
+            <div class="card" style="border-top: 3px solid #3ecf8e;">
+                <h3>Backend : Supabase</h3>
+                <p>Base de données temps réel ultra-sécurisée.<br><em>Utilisé par : Spotify, 1Password.</em></p>
+            </div>
+            <div class="card" style="border-top: 3px solid #f38020;">
+                <h3>Stockage et Sécurité : Cloudflare R2</h3>
+                <p>Hébergement des médias (vidéos HD) et diffusion mondiale ultra-rapide.<br><em>Utilisé par : Discord,
+                        Shopify.</em></p>
+            </div>
+            <div class="card" style="border-top: 3px solid var(--primary);">
+                <h3>Motion : Framer Motion</h3>
+                <p>Animations haut de gamme et transitions fluides.<br><em>Utilisé par : Vercel, Linear.</em></p>
+            </div>
+        </div>
+
+        <div class="limitation-box" style="margin-top: 30px; border-left: 4px solid var(--accent);">
+            <p><strong>Bénéfices Stratégiques :</strong></p>
+            <ul style="color: var(--text-secondary); margin-left: 20px;">
+                <li><strong>Vitesse (Vite) :</strong> Chargement quasi-instantané, crucial pour l'engagement
+                    utilisateur.</li>
+                <li><strong>Sécurité (Supabase RLS) :</strong> Protection des données au niveau de l'infrastructure.
+                </li>
+                <li><strong>Souveraineté (Hetzner) :</strong> Hébergement en Europe, conformité 100% RGPD.</li>
+                <li><strong>Évolutivité :</strong> Architecture modulaire permettant des mises à jour sans régression.
+                </li>
+            </ul>
+        </div>
+    </section>
+
+    <section id="playwright">
+        <h2>Qu'est-ce que Playwright ?</h2>
+        <p>
+            Playwright est un outil développé par <strong>Microsoft</strong>. Il est capable de piloter un
+            navigateur web (Chrome, Firefox, Safari) exactement comme le ferait un humain.
+        </p>
+        <div class="grid">
+            <div class="card">
+                <h3><span class="icon">⚡</span> Il est partout</h3>
+                <p>Un seul code de test permet de vérifier le site sur <strong>Chrome, Safari (iOS), Firefox</strong> et
+                    <strong>Edge</strong>, simultanément ou en parallèle pour un gain de temps massif.
+                </p>
+            </div>
+            <div class="card">
+                <h3><span class="icon">🖱️</span> Il interagit</h3>
+                <p>Il clique, tape au clavier, scrolle, télécharge des fichiers et remplit des formulaires.</p>
+            </div>
+            <div class="card">
+                <h3><span class="icon">🛡️</span> Il protège</h3>
+                <p>Il exécute des scénarios complexes avant chaque mise en ligne pour empêcher les bugs d'arriver en
+                    production.</p>
+            </div>
+        </div>
+    </section>
+
+    <section id="vitesse">
+        <h2>Vitesse et Réalisme</h2>
+        <p>
+            Le plus grand atout de l'automatisation est sa capacité à exécuter des tâches répétitives à une vitesse
+            surhumaine.
+        </p>
+
+        <div class="speed-highlight">
+            30x Plus Rapide
+        </div>
+        <p style="text-align: center;">qu'un testeur humain manuel.</p>
+
+        <p>
+            <strong>Le paradoxe de l'automatisation :</strong><br>
+            Playwright est programmé pour <strong>attendre</strong> que les éléments soient
+            prêts, exactement comme un utilisateur attendrait qu'une page charge. Cela rend les tests extrêmement
+            fiables ("Flakiness free").
+        </p>
+
+        <div class="card" style="border-top: 3px solid var(--primary); margin-top: 40px;">
+            <h3>🎥 Spécial Présentation : Vitesse Réduite</h3>
+            <p>
+                Pour que vous puissiez suivre les actions de l'automatisation aujourd'hui, nous avons <strong>réduit la
+                    vitesse par
+                    20</strong>.
+            </p>
+            <ul>
+                <li><strong>Vitesse Réelle :</strong> Quasi-instantanée (< 50ms par action).</li>
+                <li><strong>Vitesse Démo :</strong> 1000ms de pause entre chaque clic.</li>
+            </ul>
+        </div>
+    </section>
+
+    <section id="robustesse">
+        <h2>Robustesse technique : Le couplage Dev et QA</h2>
+        <p>
+            La stabilité d'un test automatisé dépend directement de la qualité de la structure HTML. Pour éviter que les
+            tests ne deviennent une charge de maintenance, une stratégie de sélection rigoureuse est nécessaire.
+        </p>
+
+        <div class="grid">
+            <div class="card" style="border-top: 3px solid #6366f1;">
+                <h3>❌ Ciblage par classes CSS</h3>
+                <p>
+                    Identifier un élément via ses classes de style (ex: <code>.btn-primary-large</code>).<br>
+                    <strong>Risque :</strong> Toute modification graphique par les développeurs rompt le test, même si
+                    la fonctionnalité est intacte. Le test est trop dépendant du design.
+                </p>
+            </div>
+            <div class="card" style="border-top: 3px solid #22c55e;">
+                <h3>✅ Ciblage par Attributs Dédiés</h3>
+                <p>
+                    Utiliser des attributs spécifiquement réservés au test (ex:
+                    <code>data-testid="login-submit"</code>).<br>
+                    <strong>Stabilité :</strong> Les développeurs peuvent refondre entièrement le CSS sans impacter les
+                    automates de test. C'est un contrat de pérennité.
+                </p>
+            </div>
+        </div>
+
+        <div class="limitation-box" style="border-left: 4px solid var(--primary); margin-top: 30px;">
+            <p><strong>L'importance du HTML Sémantique :</strong> Une structure HTML propre (utilisation des balises
+                <code>&lt;button&gt;</code>, <code>&lt;nav&gt;</code>, etc.) permet à Playwright d'utiliser des
+                sélecteurs contextuels universels. Cela garantit une maintenance simplifiée et une meilleure
+                collaboration entre les équipes de développement et de test.
+            </p>
+        </div>
+    </section>
+
+    <section id="limites">
+        <h2>La Limitation Mobile</h2>
+        <p>
+            Il est important de comprendre ce que nous pouvons et ne pouvons pas faire.
+        </p>
+
+        <div class="card" style="border-left: 5px solid #22c55e;">
+            <h3>✅ Ce que nous faisons : "Mobile Web"</h3>
+            <p>
+                Playwright est excellent pour tester le <strong>Site Web</strong> sur des écrans de taille mobile
+                (iPhone, Pixel). Il vérifie que le menu burger fonctionne, que rien ne dépasse de l'écran (Responsive
+                Design).
+            </p>
+        </div>
+
+        <br>
+
+        <div class="limitation-box">
+            <h3>❌ Ce que nous ne faisons pas : "Native Apps"</h3>
+            <p>
+                Playwright <strong>ne peut pas</strong> tester une application native (.ipa sur iOS ou .apk sur Android)
+                installée depuis l'App Store.
+            </p>
+            <p>
+                Pour piloter un vrai téléphone physique branché en USB et tester une application installée, il faudrait
+                utiliser d'autres outils beaucoup plus lourds (comme <em>Appium</em>). Ici, nous nous concentrons sur la
+                qualité du <strong>Web</strong>.
+            </p>
+        </div>
+    </section>
+
+    <section id="projet">
+        <h2>Les Tests Réalisés pour Alegria</h2>
+        <p>
+            Pour ce projet spécifique, nous avons mis en place une couverture de tests critique pour protéger le
+            Business.
+        </p>
+
+        <div class="grid">
+            <div class="card" style="border-left: 4px solid var(--accent);">
+                <h3>1. Exploration Visuelle</h3>
+                <ul style="font-size: 0.9rem; padding-left: 20px; color: var(--text-secondary);">
+                    <li>Navigation Desktop HD (1920x1080).</li>
+                    <li>Validation de l'identité visuelle Alegria.</li>
+                    <li>Audit de fluidité du design Obsidian.</li>
+                </ul>
+            </div>
+            <div class="card" style="border-left: 4px solid #fde047;">
+                <h3>2. Responsive Mobile</h3>
+                <ul style="font-size: 0.9rem; padding-left: 20px; color: var(--text-secondary);">
+                    <li>Simulation iPhone 13 (390x844).</li>
+                    <li>Vérification du Menu Burger.</li>
+                    <li>Adaptation dynamique sans rechargement.</li>
+                </ul>
+            </div>
+            <div class="card" style="border-left: 4px solid #22c55e;">
+                <h3>3. Tunnel de Réservation</h3>
+                <ul style="font-size: 0.9rem; padding-left: 20px; color: var(--text-secondary);">
+                    <li>Simulation utilisateur réelle (Clavier/Souris).</li>
+                    <li>Simulation d'une demande de prestation complète.</li>
+                    <li>Vérification de l'intégrité du formulaire.</li>
+                </ul>
+            </div>
+            <div class="card" style="border-left: 4px solid var(--primary);">
+                <h3>4. Sécurité Administration</h3>
+                <ul style="font-size: 0.9rem; padding-left: 20px; color: var(--text-secondary);">
+                    <li>Validation du verrouillage backend.</li>
+                    <li>Contrôle de l'accès Whitelist OAuth.</li>
+                    <li>Persistance de session sécurisée.</li>
+                </ul>
+            </div>
+            <div class="card" style="border-left: 4px solid #38bdf8;">
+                <h3>5. Conversions et Audience</h3>
+                <ul style="font-size: 0.9rem; padding-left: 20px; color: var(--text-secondary);">
+                    <li>Simulation d'interactions réelles.</li>
+                    <li>Audit de l'incrémentation des visites.</li>
+                    <li>Vérification du compteur de Demandes Booking.</li>
+                </ul>
+            </div>
+            <div class="card" style="border-left: 4px solid #fb7185;">
+                <h3>6. Bilan d'Intégrité</h3>
+                <ul style="font-size: 0.9rem; padding-left: 20px; color: var(--text-secondary);">
+                    <li>Diagnostic final de l'infrastructure.</li>
+                    <li>Vérification de la santé globale du système.</li>
+                    <li>Rapport de clôture automatique.</li>
+                </ul>
+            </div>
+        </div>
+    </section>
+
+    <section id="demo-flow">
+        <h2>Focus : Une Démo Unifiée et Persistante</h2>
+        <p>
+            Contrairement aux tests standards qui ferment le navigateur à chaque étape, notre démonstration utilise une
+            <strong>mémoire partagée</strong>. Playwright navigue du site public au dashboard admin sans
+            jamais perdre sa session.
+        </p>
+
+        <div class="grid">
+            <div class="card" style="border-left: 4px solid var(--accent);">
+                <h3>Simplicité et Vitesse</h3>
+                <p>
+                    Nous avons optimisé le flux pour ne garder que les points vitaux du business. En moins de 3 minutes,
+                    nous validons l'intégralité de la chaîne de valeur : du premier clic client aux statistiques de
+                    gestion.
+                </p>
+            </div>
+            <div class="card" style="border-left: 4px solid #38bdf8;">
+                <h3>🛠️ Maintenance Zero-Fault</h3>
+                <p>
+                    L'utilisation d'attributs dédiés et le Page Object Model garantissent que le design peut évoluer
+                    sans briser la suite de tests. C'est un contrat de fidélité technique à long terme.
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <section id="best-practices">
+        <h2>Standards de Qualité (Best Practices)</h2>
+        <p>
+            Écrire un test est une chose, le rendre <strong>maintenable</strong> en est une autre. Nous appliquons les
+            standards de l'industrie pour une automatisation durable.
+        </p>
+
+        <div class="grid">
+            <div class="card" style="border-top: 3px solid #fde047;">
+                <h3>🏗️ Page Object Model (POM)</h3>
+                <p>
+                    Nous séparons les <strong>sélecteurs</strong> de la <strong>logique de test</strong>. Si le design
+                    du site change, on ne modifie qu'un seul fichier central sans toucher aux tests.
+                </p>
+            </div>
+            <div class="card" style="border-top: 3px solid #38bdf8;">
+                <h3>Atomicité et "Safe Mode"</h3>
+                <p>
+                    Chaque test est indépendant et utilise des blocs <code>try...finally</code>. Cela garantit que le
+                    site est **restauré à neuf** même si une erreur survient durant le test.
+                </p>
+            </div>
+            <div class="card" style="border-top: 3px solid #fb7185;">
+                <h3>📉 Règle du "DRY"</h3>
+                <p>
+                    <em>Don't Repeat Yourself</em>. Les fonctions répétitives (screenshots, navigation, auth) sont
+                    mutualisées pour un code plus propre et plus rapide.
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <section id="auth">
+        <h2>Authentification Automatisée</h2>
+        <p>
+            L'un des défis majeurs des tests E2E sur des applications sécurisées est
+            l'<strong>authentification</strong>.
+            Google OAuth bloque les tentatives automatisées pour des raisons de sécurité.
+        </p>
+
+        <div class="grid">
+            <div class="card" style="border-left: 4px solid #ef4444;">
+                <h3>❌ Le Problème</h3>
+                <p>
+                    L'authentification Google (OAuth 2.0) utilise des mécanismes anti-bot (CAPTCHA, 2FA)
+                    qui empêchent Playwright de se connecter de manière traditionnelle.
+                </p>
+            </div>
+            <div class="card" style="border-left: 4px solid #22c55e;">
+                <h3>✅ La Solution</h3>
+                <p>
+                    Création d'un <strong>compte de test dédié</strong> avec authentification email/password via l'API
+                    Supabase.
+                    Playwright s'authentifie directement auprès de la base de données, sans passer par l'UI.
+                </p>
+            </div>
+        </div>
+
+        <div class="limitation-box" style="margin-top: 30px; border-left: 4px solid var(--accent);">
+            <p><strong>Méthode :</strong></p>
+            <ul style="color: var(--text-secondary); margin-left: 20px;">
+                <li><strong>Étape 1 :</strong> Un script (<code>supabase_auth.js</code>) génère automatiquement un token
+                    d'authentification valide.</li>
+                <li><strong>Étape 2 :</strong> Ce token est stocké dans un fichier <code>auth.json</code> (exclu de
+                    Git).</li>
+                <li><strong>Étape 3 :</strong> Playwright utilise ce token pour naviguer authentifié sur l'espace Admin.
+                </li>
+            </ul>
+            <p style="margin-top: 15px;"><em>Résultat : Accès admin automatisé, sécurisé, et sans modification de l'UI
+                    visible en production.</em></p>
+        </div>
+    </section>
+
+    <section id="roi"
+        style="background: rgba(255, 255, 255, 0.03); border-radius: 40px; padding: 60px 40px; border: 1px solid var(--border);">
+        <div style="text-align: center; margin-bottom: 40px;">
+            <h2 style="font-size: 2.5rem;">Gain de Temps et Retour sur Investissement</h2>
+            <p style="color: var(--text-secondary);">L'automatisation n'est pas un luxe, c'est un accélérateur de
+                croissance.</p>
+        </div>
+
+        <div class="grid">
+            <div class="card" style="border-top: 4px solid var(--primary);">
+                <h3>Accélération Fulgurante</h3>
+                <p style="margin-bottom: 20px;">Comparatif sur une "Mise en Prod" typique (Validation des 6 étapes) :
+                </p>
+
+                <div style="background: rgba(0,0,0,0.3); padding: 15px; border-radius: 12px; margin-bottom: 15px;">
+                    <div
+                        style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
+                        <span>👨‍💻 Humain (Manuel)</span>
+                        <span style="color: #ef4444; font-weight: bold;">~ 30 Minutes</span>
+                    </div>
+                    <div style="width: 100%; height: 6px; background: #333; border-radius: 3px;">
+                        <div style="width: 100%; height: 100%; background: #ef4444; border-radius: 3px;"></div>
+                    </div>
+                </div>
+
+                <div style="background: rgba(0,0,0,0.3); padding: 15px; border-radius: 12px;">
+                    <div
+                        style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
+                        <span>🤖 Playwright (Auto)</span>
+                        <span style="color: #22c55e; font-weight: bold;">~ 1.5 Minute</span>
+                    </div>
+                    <div style="width: 100%; height: 6px; background: #333; border-radius: 3px;">
+                        <div
+                            style="width: 5%; height: 100%; background: #22c55e; border-radius: 3px; box-shadow: 0 0 10px #22c55e;">
+                        </div>
+                    </div>
+                </div>
+
+                <div style="text-align: center; margin-top: 25px;">
+                    <span
+                        style="font-size: 2.5rem; font-weight: 800; background: linear-gradient(to right, #22c55e, #38bdf8); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent;">x20</span>
+                    <p style="margin: 0; font-size: 0.9rem; color: #aaa;">Facteur d'accélération</p>
+                </div>
+            </div>
+
+            <div class="card" style="border-top: 4px solid #38bdf8;">
+                <h3>💰 Résultat Net</h3>
+                <ul style="font-size: 1rem; padding-left: 20px; color: var(--text-secondary); line-height: 2;">
+                    <li><strong>1250 Heures</strong> économisées par an (pour 5 devs).</li>
+                    <li>Soit <strong>1 Développeur Full-Time</strong> gagné.</li>
+                    <li>L'équipe produit de la <strong>valeur</strong>, pas de la maintenance.</li>
+                </ul>
+            </div>
+        </div>
+
+        <div style="text-align: center; margin-top: 40px; font-size: 0.8rem; color: #666;">
+            <p><em>Sources : <a href="https://dora.dev/research/" target="_blank"
+                        style="color: inherit; text-decoration: underline;">State of DevOps Report (Google
+                        DORA)</a></em></p>
+        </div>
+        </div>
+    </section>
+
+    <section style="text-align: center; margin-bottom: 60px;">
+        <h2>Conclusion</h2>
+        <p>
+            Avec cette suite de tests, nous avons une assurance <strong>continue</strong>. À chaque modification du code
+            par un développeur, ces tests se lancent automatiquement pour garantir que rien n'a été cassé.
+        </p>
+        <p style="color: var(--primary); font-weight: bold; font-size: 1.2rem;">
+            Nous passons d'une validation subjective à une preuve technique irréfutable.
+        </p>
+    </section>
+
+    <a href="#" id="scrollTop" title="Retour en haut">↑</a>
+
+</body>
+
+</html>
