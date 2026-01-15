@@ -448,51 +448,61 @@
         <div class="grid">
             <div class="card" style="border-left: 4px solid var(--accent);">
                 <h3>1. Exploration Visuelle</h3>
-                <ul style="font-size: 0.9rem; padding-left: 20px; color: var(--text-secondary);">
-                    <li>Navigation Desktop HD (1920x1080).</li>
-                    <li>Validation de l'identité visuelle Alegria.</li>
-                    <li>Audit de fluidité du design Obsidian.</li>
-                </ul>
+                <p style="font-size: 0.95rem; line-height: 1.6; color: var(--text-secondary);">
+                    <strong>Ce que l'on teste :</strong> Le robot ouvre Chrome en 1920x1080 et navigue sur la "Landing
+                    Page".<br>
+                    <strong>Le détail précis :</strong> Il vérifie que le logo est visiible, que les animations "Framer
+                    Motion" se lancent, et que la Hero Section charge sa vidéo HD depuis Cloudflare R2 sans erreur.
+                </p>
             </div>
             <div class="card" style="border-left: 4px solid #fde047;">
                 <h3>2. Responsive Mobile</h3>
-                <ul style="font-size: 0.9rem; padding-left: 20px; color: var(--text-secondary);">
-                    <li>Simulation iPhone 13 (390x844).</li>
-                    <li>Vérification du Menu Burger.</li>
-                    <li>Adaptation dynamique sans rechargement.</li>
-                </ul>
+                <p style="font-size: 0.95rem; line-height: 1.6; color: var(--text-secondary);">
+                    <strong>Ce que l'on teste :</strong> Sans fermer le site, le robot redimensionne la fenêtre à la
+                    taille d'un iPhone 13 (390px).<br>
+                    <strong>Le détail précis :</strong> Il vérifie que le menu de navigation Desktop disparaît bien pour
+                    laisser place au "Burger Menu", et que tous les titres se réalignent pour être lisibles sur petit
+                    écran.
+                </p>
             </div>
             <div class="card" style="border-left: 4px solid #22c55e;">
                 <h3>3. Tunnel de Réservation</h3>
-                <ul style="font-size: 0.9rem; padding-left: 20px; color: var(--text-secondary);">
-                    <li>Simulation utilisateur réelle (Clavier/Souris).</li>
-                    <li>Simulation d'une demande de prestation complète.</li>
-                    <li>Vérification de l'intégrité du formulaire.</li>
-                </ul>
+                <p style="font-size: 0.95rem; line-height: 1.6; color: var(--text-secondary);">
+                    <strong>Ce que l'on teste :</strong> Le "Money Time". Le robot simule un vrai client qui veut
+                    réserver.<br>
+                    <strong>Le détail précis :</strong> Il remplit tous les champs (Nom, Date, Email) et clique sur
+                    "Réserver".
+                    Il attend ensuite la preuve technique (Code 204 No Content) que la base de données a bien reçu la
+                    commande.
+                </p>
             </div>
             <div class="card" style="border-left: 4px solid var(--primary);">
                 <h3>4. Sécurité Administration</h3>
-                <ul style="font-size: 0.9rem; padding-left: 20px; color: var(--text-secondary);">
-                    <li>Validation du verrouillage backend.</li>
-                    <li>Contrôle de l'accès Whitelist OAuth.</li>
-                    <li>Persistance de session sécurisée.</li>
-                </ul>
+                <p style="font-size: 0.95rem; line-height: 1.6; color: var(--text-secondary);">
+                    <strong>Ce que l'on teste :</strong> Le passage de la zone publique à la zone privée
+                    ultra-sécurisée.<br>
+                    <strong>Le détail précis :</strong> Le robot utilise un token JWT crypté (généré hors connexion)
+                    pour franchir le mur d'authentification sans avoir à scanner de QR Code, simulant un Admin déjà
+                    connecté.
+                </p>
             </div>
             <div class="card" style="border-left: 4px solid #38bdf8;">
                 <h3>5. Conversions et Audience</h3>
-                <ul style="font-size: 0.9rem; padding-left: 20px; color: var(--text-secondary);">
-                    <li>Simulation d'interactions réelles.</li>
-                    <li>Audit de l'incrémentation des visites.</li>
-                    <li>Vérification du compteur de Demandes Booking.</li>
-                </ul>
+                <p style="font-size: 0.95rem; line-height: 1.6; color: var(--text-secondary);">
+                    <strong>Ce que l'on teste :</strong> La précision des chiffres d'analyse (Business
+                    Intelligence).<br>
+                    <strong>Le détail précis :</strong> Le robot intercepte le signal réseau qui part vers Supabase
+                    quand on clique sur "Instagram". Il vérifie ensuite dans le Dashboard Admin que le compteur de vues
+                    a augmenté de exactement +1.
+                </p>
             </div>
             <div class="card" style="border-left: 4px solid #fb7185;">
                 <h3>6. Bilan d'Intégrité</h3>
-                <ul style="font-size: 0.9rem; padding-left: 20px; color: var(--text-secondary);">
-                    <li>Diagnostic final de l'infrastructure.</li>
-                    <li>Vérification de la santé globale du système.</li>
-                    <li>Rapport de clôture automatique.</li>
-                </ul>
+                <p style="font-size: 0.95rem; line-height: 1.6; color: var(--text-secondary);">
+                    <strong>Ce que l'on teste :</strong> L'état de santé global du système après l'effort.<br>
+                    <strong>Le détail précis :</strong> Le robot génère un rapport final (HTML) qui prouve que toutes
+                    les étapes précédentes se sont enchaînées sans crash, validant la mise en production.
+                </p>
             </div>
         </div>
     </section>
